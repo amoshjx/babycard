@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>宝宝黑白卡 | Baby Black & White Flashcards - 100张婴儿视觉训练卡</title>
+<meta name="description" content="免费婴儿黑白卡应用，100张精绘SVG矢量图，中英双语语音朗读，促进0-6个月宝宝视觉发育。">
+<meta name="keywords" content="黑白卡,婴儿早教,视觉训练,baby flashcards,black white cards">
+<meta property="og:title" content="宝宝黑白卡 Baby Flashcards">
+<meta property="og:description" content="100张精绘黑白卡，中英双语语音，促进宝宝视觉发育">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"宝宝黑白卡","applicationCategory":"EducationApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}
+</script>
+<style>
+/*
+ * 兼容性说明 — 目标: Android 5+ (Chrome 49+), iOS 10+ (Safari 10+), 微信内置浏览器
+ * 已移除: aspect-ratio / inset / clamp() / min() / backdrop-filter / will-change
+ * 已降级: gap→margin / filter:drop-shadow→移除
+ */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Noto+Sans+SC:wght@400;700&display=swap');
+*{margin:0;padding:0;-webkit-box-sizing:border-box;box-sizing:border-box}
+html{-webkit-overflow-scrolling:touch}
+body{background:#0c0c14;color:#f0ede8;font-family:'Noto Sans SC','Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+
+/* ── HEADER ── */
+.hero{text-align:center;padding:2.5rem 1.5rem 1rem;position:relative;overflow:hidden}
+.hero h1{font-family:'Nunito',sans-serif;font-size:2.2rem;font-weight:900;color:#f0ede8;line-height:1.2}
+.hero-sub{font-size:0.9rem;color:#6b6880;margin-top:0.4rem}
+.hero-badge{display:inline-block;margin-top:0.8rem;padding:0.35rem 1rem;background:rgba(139,124,246,0.1);border:1px solid rgba(139,124,246,0.2);border-radius:50px;font-size:0.75rem;color:#8b7cf6}
+.hero-badge b{font-weight:700}
+
+/* ── TOOLBAR ── */
+.toolbar{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-flex-wrap:wrap;flex-wrap:wrap;padding:0.8rem 1.5rem;position:-webkit-sticky;position:sticky;top:0;z-index:100;background:rgba(12,12,20,0.92);border-bottom:1px solid rgba(255,255,255,0.04)}
+.toolbar .play-btn{margin:0.3rem}
+.play-btn{background:#8b7cf6;border:none;color:#fff;padding:0.55rem 1.4rem;border-radius:50px;font-size:0.85rem;font-weight:700;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.play-btn:active{opacity:0.8}
+.play-btn.green{background:#34d399}
+
+/* ── CATEGORIES ── */
+.cat-bar{display:-webkit-flex;display:flex;padding:0.8rem 1.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-tag{white-space:nowrap;padding:0.4rem 1rem;border-radius:50px;font-size:0.78rem;font-weight:600;border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:#6b6880;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;font-family:inherit;margin-right:0.5rem;-webkit-tap-highlight-color:transparent}
+.cat-tag.active{background:rgba(139,124,246,0.15);border-color:#8b7cf6;color:#8b7cf6}
+
+/* ── GRID ── */
+main{max-width:1440px;margin:0 auto}
+.grid{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;padding:0.5rem 1rem 4rem;-webkit-justify-content:center;justify-content:center}
+.card-wrap{width:50%;padding:0.4rem}
+@media(min-width:500px){.card-wrap{width:33.333%}}
+@media(min-width:768px){.card-wrap{width:25%;padding:0.6rem}}
+@media(min-width:1024px){.card-wrap{width:20%}}
+
+/* ── CARDS ── */
+.card{background:#f7f6f2;border-radius:16px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* aspect-ratio 降级: 用 padding-top hack */
+.card-img{width:100%;position:relative;padding-top:100%;overflow:hidden}
+.card-img-inner{position:absolute;top:0;left:0;right:0;bottom:0;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;padding:14%}
+.card-img-inner svg{width:100%;height:100%}
+/* 懒加载占位 */
+.card-img-inner.lazy{visibility:hidden}
+.card-img-inner.loaded{visibility:visible}
+.card-info{background:#0c0c14;padding:0.6rem 0.7rem;text-align:center;border-top:1px solid rgba(255,255,255,0.04)}
+.card-en{font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700}
+.card-zh{font-size:0.75rem;color:#6b6880;margin-top:0.05rem}
+.card-btns{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;margin-top:0.3rem}
+.card-btn{background:rgba(139,124,246,0.08);border:1px solid rgba(139,124,246,0.12);color:#8b7cf6;padding:0.15rem 0.5rem;border-radius:20px;font-size:0.65rem;font-family:inherit;cursor:pointer;font-weight:600;margin:0 0.2rem;-webkit-tap-highlight-color:transparent}
+
+/* ── SLIDESHOW ── */
+.slide-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#f7f6f2;z-index:1000;display:none;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center}
+.slide-overlay.active{display:-webkit-flex;display:flex}
+.slide-img-wrap{-webkit-flex:1;flex:1;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;width:100%;padding:1.5rem;min-height:0;overflow:hidden}
+.slide-img-wrap svg{max-width:90vw;max-height:80vh;width:auto;height:auto}
+.slide-bottom{background:#0c0c14;width:100%;padding:0.5rem 1rem 0.7rem;text-align:center;-webkit-flex-shrink:0;flex-shrink:0}
+.slide-en{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:800;color:#f0ede8}
+.slide-zh{font-size:1.1rem;color:#6b6880;margin-top:0.1rem}
+.slide-controls{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center;margin-top:0.4rem}
+.sl-btn{background:rgba(139,124,246,0.1);border:1px solid rgba(139,124,246,0.15);color:#8b7cf6;width:40px;height:40px;border-radius:50%;font-size:1rem;cursor:pointer;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;font-family:inherit;margin:0 0.35rem;-webkit-tap-highlight-color:transparent}
+.sl-btn.close-btn{position:absolute;top:0.8rem;right:0.8rem;background:rgba(0,0,0,0.5);color:#fff;border:none;z-index:10}
+.progress-bar{position:absolute;top:0;left:0;height:3px;background:#8b7cf6;-webkit-transition:width 0.1s linear;transition:width 0.1s linear;z-index:5}
+.slide-counter{font-size:0.7rem;color:#6b6880;margin-top:0.15rem;font-weight:600}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:1.5rem;color:#6b6880;font-size:0.72rem;border-top:1px solid rgba(255,255,255,0.04)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:400px){
+  .card-wrap{width:50%;padding:0.3rem}
+  .card-img-inner{padding:12%}
+  .card-info{padding:0.45rem 0.5rem}
+  .hero{padding:1.5rem 1rem 0.5rem}
+  .hero h1{font-size:1.6rem}
+  .cat-bar{padding:0.5rem 0.8rem}
+  .slide-en{font-size:1.4rem}
+  .slide-zh{font-size:0.95rem}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>宝宝黑白卡</h1>
+  <p class="hero-sub">Baby Black & White Flashcards</p>
+  <div class="hero-badge">✦ <b>100</b> 张精绘卡片 · 中英双语语音 · 完全免费</div>
+</header>
+
+<nav class="toolbar" aria-label="播放控制">
+  <button class="play-btn" onclick="openSlideshow()" aria-label="随机播放">▶ 随机播放</button>
+  <button class="play-btn green" onclick="openSlideshow(true)" aria-label="顺序播放">📖 顺序播放</button>
+</nav>
+
+<nav class="cat-bar" id="catBar" aria-label="分类筛选"></nav>
+
+<main>
+  <div class="grid" id="grid" role="list"></div>
+</main>
+
+<div class="slide-overlay" id="slideOverlay" role="dialog" aria-modal="true">
+  <div class="progress-bar" id="progressBar"></div>
+  <button class="sl-btn close-btn" onclick="closeSlide()" aria-label="关闭">✕</button>
+  <div class="slide-img-wrap" id="slideImg"></div>
+  <div class="slide-bottom">
+    <div class="slide-en" id="slideEn"></div>
+    <div class="slide-zh" id="slideZh"></div>
+    <div class="slide-controls">
+      <button class="sl-btn" onclick="slidePrev()" aria-label="上一张">◀</button>
+      <button class="sl-btn" onclick="speakCur('en')" aria-label="朗读英文">🔊</button>
+      <button class="sl-btn" id="pauseBtn" onclick="togglePause()" aria-label="暂停">⏸</button>
+      <button class="sl-btn" onclick="speakCur('zh')" aria-label="朗读中文">🗣</button>
+      <button class="sl-btn" onclick="slideNext()" aria-label="下一张">▶</button>
+    </div>
+    <div class="slide-counter" id="slideCounter"></div>
+  </div>
+</div>
+
+<footer>
+  <p>宝宝黑白卡 © 2026 · 促进 0-6 个月婴儿视觉发育 · 完全免费 · 无广告</p>
+</footer>
+
+<script>
+var B='#0a0a0a',W='#f5f5f0';
+var CAT_LABELS={all:'全部 All',animals:'🐾 动物',food:'🍎 食物',nature:'🌿 自然',objects:'🏠 物品',body:'✋ 身体',shapes:'◆ 形状',transport:'🚀 交通',music:'🎵 乐器',weather:'🌧 天气'};
+const cards=[
+{en:'Cat',zh:'猫',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="130" rx="55" ry="45" fill="${B}"/><circle cx="100" cy="72" r="38" fill="${B}"/><polygon points="70,45 62,10 88,35" fill="${B}"/><polygon points="130,45 138,10 112,35" fill="${B}"/><polygon points="70,45 66,18 85,38" fill="${W}" stroke="${B}" stroke-width="1"/><polygon points="130,45 134,18 115,38" fill="${W}" stroke="${B}" stroke-width="1"/><ellipse cx="85" cy="68" rx="9" ry="10" fill="${W}"/><ellipse cx="115" cy="68" rx="9" ry="10" fill="${W}"/><ellipse cx="87" cy="68" rx="4" ry="7" fill="${B}"/><ellipse cx="117" cy="68" rx="4" ry="7" fill="${B}"/><ellipse cx="88" cy="66" rx="1.5" ry="2" fill="${W}"/><ellipse cx="118" cy="66" rx="1.5" ry="2" fill="${W}"/><polygon points="100,78 96,83 104,83" fill="${W}"/><path d="M96,83Q100,90 104,83" fill="none" stroke="${W}" stroke-width="1.5"/><line x1="60" y1="76" x2="88" y2="80" stroke="${W}" stroke-width="1.2"/><line x1="58" y1="83" x2="87" y2="83" stroke="${W}" stroke-width="1.2"/><line x1="140" y1="76" x2="112" y2="80" stroke="${W}" stroke-width="1.2"/><line x1="142" y1="83" x2="113" y2="83" stroke="${W}" stroke-width="1.2"/><ellipse cx="78" cy="170" rx="14" ry="10" fill="${B}"/><ellipse cx="122" cy="170" rx="14" ry="10" fill="${B}"/><path d="M150,130Q175,100 165,70" fill="none" stroke="${B}" stroke-width="8" stroke-linecap="round"/></svg>`},
+{en:'Dog',zh:'狗',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="140" rx="55" ry="40" fill="${B}"/><circle cx="100" cy="75" r="40" fill="${B}"/><ellipse cx="60" cy="70" rx="18" ry="32" fill="${B}" transform="rotate(-15,60,70)"/><ellipse cx="140" cy="70" rx="18" ry="32" fill="${B}" transform="rotate(15,140,70)"/><circle cx="85" cy="70" r="14" fill="${W}"/><circle cx="115" cy="70" r="14" fill="${W}"/><circle cx="87" cy="69" r="6" fill="${B}"/><circle cx="117" cy="69" r="6" fill="${B}"/><circle cx="89" cy="67" r="2" fill="${W}"/><circle cx="119" cy="67" r="2" fill="${W}"/><ellipse cx="100" cy="90" rx="18" ry="14" fill="${W}"/><ellipse cx="100" cy="85" rx="8" ry="6" fill="${B}"/><path d="M100,91v7M94,98Q100,104 106,98" fill="none" stroke="${B}" stroke-width="1.5" stroke-linecap="round"/><rect x="72" y="165" width="16" height="25" rx="8" fill="${B}"/><rect x="112" y="165" width="16" height="25" rx="8" fill="${B}"/><path d="M152,125Q170,105 160,85" fill="none" stroke="${B}" stroke-width="7" stroke-linecap="round"/></svg>`},
+{en:'Rabbit',zh:'兔子',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="145" rx="45" ry="38" fill="${B}"/><circle cx="100" cy="95" r="35" fill="${B}"/><ellipse cx="80" cy="38" rx="12" ry="38" fill="${B}" transform="rotate(-8,80,38)"/><ellipse cx="120" cy="38" rx="12" ry="38" fill="${B}" transform="rotate(8,120,38)"/><ellipse cx="80" cy="36" rx="6" ry="28" fill="${W}" transform="rotate(-8,80,36)"/><ellipse cx="120" cy="36" rx="6" ry="28" fill="${W}" transform="rotate(8,120,36)"/><circle cx="87" cy="90" r="8" fill="${W}"/><circle cx="113" cy="90" r="8" fill="${W}"/><circle cx="89" cy="89" r="4" fill="${B}"/><circle cx="115" cy="89" r="4" fill="${B}"/><ellipse cx="100" cy="100" rx="4" ry="3" fill="${W}"/><path d="M96,103Q100,108 104,103" fill="none" stroke="${W}" stroke-width="1.2"/><line x1="65" y1="98" x2="90" y2="101" stroke="${W}" stroke-width="1"/><line x1="135" y1="98" x2="110" y2="101" stroke="${W}" stroke-width="1"/><ellipse cx="82" cy="175" rx="12" ry="8" fill="${B}"/><ellipse cx="118" cy="175" rx="12" ry="8" fill="${B}"/><circle cx="145" cy="150" r="12" fill="${B}"/></svg>`},
+{en:'Fish',zh:'鱼',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="90" cy="100" rx="55" ry="35" fill="${B}"/><polygon points="143,100 178,68 178,132" fill="${B}"/><path d="M78,66Q92,42 106,66" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="60" cy="92" r="12" fill="${W}"/><circle cx="62" cy="91" r="6" fill="${B}"/><circle cx="64" cy="89" r="2" fill="${W}"/><path d="M38,100Q34,100 36,106" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round"/><path d="M74,85Q70,95 74,108" fill="none" stroke="${W}" stroke-width="1.5"/><circle cx="30" cy="82" r="3" fill="none" stroke="${B}" stroke-width="1.2"/><circle cx="24" cy="72" r="2" fill="none" stroke="${B}" stroke-width="1"/></svg>`},
+{en:'Bird',zh:'鸟',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="115" rx="40" ry="35" fill="${B}"/><circle cx="100" cy="65" r="28" fill="${B}"/><circle cx="110" cy="60" r="9" fill="${W}"/><circle cx="112" cy="59" r="4.5" fill="${B}"/><polygon points="128,65 150,62 128,72" fill="${B}" stroke="${W}" stroke-width="1.5"/><path d="M65,105Q40,90 30,110Q45,115 60,130Q75,135 80,120" fill="${B}" stroke="${W}" stroke-width="1.5"/><path d="M62,135L40,160 50,135M55,138L30,168 45,140" fill="${B}"/><line x1="90" y1="148" x2="85" y2="178" stroke="${B}" stroke-width="3"/><line x1="110" y1="148" x2="115" y2="178" stroke="${B}" stroke-width="3"/><path d="M75,178h20M105,178h20" fill="none" stroke="${B}" stroke-width="2.5" stroke-linecap="round"/></svg>`},
+{en:'Butterfly',zh:'蝴蝶',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="105" rx="5" ry="35" fill="${B}"/><circle cx="100" cy="62" r="8" fill="${B}"/><path d="M96,56Q80,30 75,28" fill="none" stroke="${B}" stroke-width="1.5" stroke-linecap="round"/><path d="M104,56Q120,30 125,28" fill="none" stroke="${B}" stroke-width="1.5" stroke-linecap="round"/><circle cx="75" cy="28" r="3" fill="${B}"/><circle cx="125" cy="28" r="3" fill="${B}"/><path d="M95,80Q50,40 30,70Q25,95 60,100Q80,105 95,95" fill="${B}"/><path d="M105,80Q150,40 170,70Q175,95 140,100Q120,105 105,95" fill="${B}"/><circle cx="55" cy="75" r="12" fill="${W}" opacity="0.9"/><circle cx="55" cy="75" r="6" fill="${B}"/><circle cx="145" cy="75" r="12" fill="${W}" opacity="0.9"/><circle cx="145" cy="75" r="6" fill="${B}"/><path d="M95,105Q55,110 40,140Q45,165 75,155Q90,145 95,120" fill="${B}"/><path d="M105,105Q145,110 160,140Q155,165 125,155Q110,145 105,120" fill="${B}"/><circle cx="62" cy="138" r="8" fill="${W}" opacity="0.8"/><circle cx="138" cy="138" r="8" fill="${W}" opacity="0.8"/></svg>`},
+{en:'Elephant',zh:'大象',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="115" cy="105" rx="58" ry="45" fill="${B}"/><circle cx="55" cy="72" r="35" fill="${B}"/><path d="M32,68Q20,62 18,55Q16,48 22,48Q30,50 35,58" fill="${B}"/><path d="M35,68Q22,65 20,56" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M38,85Q30,92 25,105Q20,120 22,135Q22,145 28,148Q34,148 34,140Q34,128 38,118Q42,108 48,102" fill="${B}" stroke="${B}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M38,85Q30,92 25,105Q20,120 22,135Q22,145 28,148" fill="none" stroke="${W}" stroke-width="1" opacity="0.4"/><path d="M26,105Q32,102 36,106M24,118Q30,115 34,118M24,130Q28,128 32,130" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.35"/><path d="M28,148L22,152M28,148L34,152" fill="none" stroke="${B}" stroke-width="2" stroke-linecap="round"/><path d="M48,95Q58,108 52,118" fill="none" stroke="${W}" stroke-width="4" stroke-linecap="round" opacity="0.5"/><circle cx="48" cy="62" r="6" fill="${W}"/><circle cx="50" cy="61" r="3" fill="${B}"/><circle cx="51" cy="59.5" r="1" fill="${W}"/><path d="M60,48Q68,38 78,42" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.2"/><rect x="78" y="140" width="20" height="42" rx="10" fill="${B}"/><rect x="105" y="142" width="18" height="38" rx="9" fill="${B}"/><rect x="130" y="142" width="18" height="38" rx="9" fill="${B}"/><rect x="155" y="140" width="20" height="42" rx="10" fill="${B}"/><path d="M82,178h12M109,178h10M134,178h10M159,178h12" fill="none" stroke="${W}" stroke-width="1.5"/><path d="M170,100Q180,108 176,125" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M174,122L172,130M176,122L180,130" fill="none" stroke="${B}" stroke-width="1.2" stroke-linecap="round"/></svg>`},
+{en:'Panda',zh:'熊猫',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="140" rx="50" ry="42" fill="${W}" stroke="${B}" stroke-width="2"/><circle cx="100" cy="75" r="40" fill="${W}" stroke="${B}" stroke-width="2"/><circle cx="67" cy="42" r="15" fill="${B}"/><circle cx="133" cy="42" r="15" fill="${B}"/><ellipse cx="82" cy="72" rx="16" ry="14" fill="${B}" transform="rotate(-10,82,72)"/><ellipse cx="118" cy="72" rx="16" ry="14" fill="${B}" transform="rotate(10,118,72)"/><circle cx="82" cy="72" r="7" fill="${W}"/><circle cx="118" cy="72" r="7" fill="${W}"/><circle cx="84" cy="71" r="3.5" fill="${B}"/><circle cx="120" cy="71" r="3.5" fill="${B}"/><ellipse cx="100" cy="86" rx="6" ry="4" fill="${B}"/><path d="M100,90v4M95,94Q100,99 105,94" fill="none" stroke="${B}" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="55" cy="130" rx="18" ry="12" fill="${B}" transform="rotate(-30,55,130)"/><ellipse cx="145" cy="130" rx="18" ry="12" fill="${B}" transform="rotate(30,145,130)"/><ellipse cx="78" cy="178" rx="16" ry="10" fill="${B}"/><ellipse cx="122" cy="178" rx="16" ry="10" fill="${B}"/></svg>`},
+{en:'Penguin',zh:'企鹅',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="120" rx="42" ry="55" fill="${B}"/><ellipse cx="100" cy="130" rx="28" ry="40" fill="${W}"/><circle cx="100" cy="60" r="30" fill="${B}"/><circle cx="88" cy="55" r="7" fill="${W}"/><circle cx="112" cy="55" r="7" fill="${W}"/><circle cx="90" cy="54" r="3.5" fill="${B}"/><circle cx="114" cy="54" r="3.5" fill="${B}"/><polygon points="96,65 100,75 104,65" fill="${W}" stroke="${B}" stroke-width="1"/><path d="M58,100Q45,120 50,150Q52,155 58,150Q62,130 62,110Z" fill="${B}"/><path d="M142,100Q155,120 150,150Q148,155 142,150Q138,130 138,110Z" fill="${B}"/><path d="M80,172L70,182h20ZM120,172L110,182h20Z" fill="${B}"/></svg>`},
+{en:'Owl',zh:'猫头鹰',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="130" rx="40" ry="48" fill="${B}"/><circle cx="100" cy="72" r="38" fill="${B}"/><polygon points="68,42 58,15 82,38" fill="${B}"/><polygon points="132,42 142,15 118,38" fill="${B}"/><circle cx="82" cy="68" r="14" fill="${W}"/><circle cx="118" cy="68" r="14" fill="${W}"/><circle cx="82" cy="68" r="8" fill="${B}"/><circle cx="118" cy="68" r="8" fill="${B}"/><circle cx="85" cy="65" r="3" fill="${W}"/><circle cx="121" cy="65" r="3" fill="${W}"/><polygon points="96,80 100,92 104,80" fill="${W}"/><path d="M80,115Q100,108 120,115M78,125Q100,118 122,125M80,135Q100,128 120,135" fill="none" stroke="${W}" stroke-width="1" opacity="0.4"/><line x1="50" y1="182" x2="150" y2="182" stroke="${B}" stroke-width="4" stroke-linecap="round"/></svg>`},
+{en:'Turtle',zh:'乌龟',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="100" rx="55" ry="40" fill="${B}"/><ellipse cx="100" cy="95" rx="20" ry="15" fill="none" stroke="${W}" stroke-width="1.5"/><path d="M80,95L55,80M120,95L145,80M85,108L60,120M115,108L140,120M100,110v25" fill="none" stroke="${W}" stroke-width="1"/><ellipse cx="35" cy="95" rx="18" ry="14" fill="${B}"/><circle cx="28" cy="90" r="4" fill="${W}"/><circle cx="29" cy="89" r="2" fill="${B}"/><ellipse cx="65" cy="130" rx="12" ry="8" fill="${B}" transform="rotate(-20,65,130)"/><ellipse cx="135" cy="130" rx="12" ry="8" fill="${B}" transform="rotate(20,135,130)"/><ellipse cx="60" cy="78" rx="10" ry="7" fill="${B}" transform="rotate(20,60,78)"/><ellipse cx="140" cy="78" rx="10" ry="7" fill="${B}" transform="rotate(-20,140,78)"/><path d="M155,100Q165,102 168,98" fill="none" stroke="${B}" stroke-width="4" stroke-linecap="round"/></svg>`},
+{en:'Snail',zh:'蜗牛',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M30,145Q25,135 40,130h100Q160,130 155,145Q150,155 100,155Q50,155 30,145Z" fill="${B}"/><circle cx="110" cy="95" r="42" fill="${B}"/><path d="M120,95Q120,80 110,78Q95,78 95,92Q95,108 112,108Q130,108 132,90Q132,72 108,68Q85,68 82,95Q82,118 110,122Q140,122 145,90" fill="none" stroke="${W}" stroke-width="2"/><ellipse cx="50" cy="125" rx="18" ry="14" fill="${B}"/><line x1="42" y1="120" x2="35" y2="100" stroke="${B}" stroke-width="2.5" stroke-linecap="round"/><line x1="55" y1="118" x2="52" y2="98" stroke="${B}" stroke-width="2.5" stroke-linecap="round"/><circle cx="35" cy="97" r="4" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="52" cy="95" r="4" fill="${B}" stroke="${W}" stroke-width="1"/></svg>`},
+{en:'Bee',zh:'蜜蜂',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="78" cy="72" rx="28" ry="18" fill="none" stroke="${B}" stroke-width="2" transform="rotate(-20,78,72)"/><ellipse cx="122" cy="72" rx="28" ry="18" fill="none" stroke="${B}" stroke-width="2" transform="rotate(20,122,72)"/><ellipse cx="100" cy="110" rx="30" ry="38" fill="${B}"/><path d="M72,100Q100,95 128,100M71,115Q100,110 129,115M74,130Q100,125 126,130" fill="none" stroke="${W}" stroke-width="5"/><circle cx="100" cy="72" r="20" fill="${B}"/><circle cx="90" cy="68" r="6" fill="${W}"/><circle cx="110" cy="68" r="6" fill="${W}"/><path d="M92,55Q85,38 80,32M108,55Q115,38 120,32" fill="none" stroke="${B}" stroke-width="2" stroke-linecap="round"/><circle cx="80" cy="32" r="3" fill="${B}"/><circle cx="120" cy="32" r="3" fill="${B}"/></svg>`},
+{en:'Frog',zh:'青蛙',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="120" rx="55" ry="38" fill="${B}"/><circle cx="70" cy="72" r="22" fill="${B}"/><circle cx="130" cy="72" r="22" fill="${B}"/><circle cx="70" cy="68" r="12" fill="${W}"/><circle cx="130" cy="68" r="12" fill="${W}"/><circle cx="72" cy="66" r="6" fill="${B}"/><circle cx="132" cy="66" r="6" fill="${B}"/><path d="M75,108Q100,120 125,108" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round"/><path d="M70,155L58,168M70,155v15M70,155L82,168M130,155L118,168M130,155v15M130,155L142,168" fill="none" stroke="${B}" stroke-width="2" stroke-linecap="round"/></svg>`},
+{en:'Whale',zh:'鲸鱼',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="95" cy="110" rx="68" ry="42" fill="${B}"/><path d="M160,105Q178,90 185,75Q188,85 182,100Q178,108 163,112" fill="${B}"/><circle cx="48" cy="100" r="6" fill="${W}"/><circle cx="50" cy="99" r="3" fill="${B}"/><path d="M32,115Q28,118 32,122" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round"/><path d="M55,68L52,48Q50,42 55,42Q60,42 58,48L55,68M65,65L63,50Q61,44 65,44Q69,44 67,50L65,65" fill="${B}"/><circle cx="53" cy="38" r="4" fill="none" stroke="${B}" stroke-width="1.5"/></svg>`},
+{en:'Shark',zh:'鲨鱼',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M30,105Q30,80 60,78Q90,76 120,80Q150,84 175,100Q180,105 175,110Q150,126 120,128Q90,130 60,128Q30,126 30,105Z" fill="${B}"/><polygon points="100,78 105,48 115,80" fill="${B}"/><polygon points="168,100 195,92 195,115" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="55" cy="98" r="5" fill="${W}"/><circle cx="57" cy="97" r="2.5" fill="${B}"/><path d="M40,110Q50,118 65,115" fill="none" stroke="${W}" stroke-width="1.5"/><path d="M48,112L50,116 52,112 54,116 56,112 58,116 60,112" fill="none" stroke="${W}" stroke-width="1"/></svg>`},
+{en:'Crab',zh:'螃蟹',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="110" rx="45" ry="32" fill="${B}"/><circle cx="70" cy="72" r="12" fill="${B}"/><circle cx="130" cy="72" r="12" fill="${B}"/><circle cx="70" cy="70" r="6" fill="${W}"/><circle cx="130" cy="70" r="6" fill="${W}"/><path d="M85,125Q100,132 115,125" fill="none" stroke="${W}" stroke-width="1.5"/><path d="M55,100Q35,85 25,75" fill="${B}" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M145,100Q165,85 175,75" fill="${B}" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M25,75L18,68M25,75L20,78" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M175,75L182,68M175,75L180,78" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M70,138Q62,155 55,155M130,138Q138,155 145,155" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/></svg>`},
+{en:'Ladybug',zh:'瓢虫',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="105" r="52" fill="${B}"/><line x1="100" y1="55" x2="100" y2="155" stroke="${W}" stroke-width="2"/><circle cx="80" cy="80" r="8" fill="${W}"/><circle cx="120" cy="80" r="8" fill="${W}"/><circle cx="75" cy="108" r="7" fill="${W}"/><circle cx="125" cy="108" r="7" fill="${W}"/><circle cx="85" cy="132" r="6" fill="${W}"/><circle cx="115" cy="132" r="6" fill="${W}"/><circle cx="100" cy="50" r="18" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="92" cy="45" r="4" fill="${W}"/><circle cx="108" cy="45" r="4" fill="${W}"/><path d="M90,40Q82,22 78,18M110,40Q118,22 122,18" fill="none" stroke="${B}" stroke-width="2" stroke-linecap="round"/><circle cx="78" cy="18" r="3" fill="${B}"/><circle cx="122" cy="18" r="3" fill="${B}"/></svg>`},
+{en:'Monkey',zh:'猴子',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="135" rx="40" ry="42" fill="${B}"/><circle cx="100" cy="80" r="38" fill="${B}"/><circle cx="55" cy="80" r="16" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="145" cy="80" r="16" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="88" cy="72" r="5" fill="${W}"/><circle cx="112" cy="72" r="5" fill="${W}"/><circle cx="89" cy="71" r="2.5" fill="${B}"/><circle cx="113" cy="71" r="2.5" fill="${B}"/><ellipse cx="100" cy="88" rx="4" ry="3" fill="${W}"/><path d="M92,95Q100,102 108,95" fill="none" stroke="${W}" stroke-width="1.5"/><path d="M155,130Q170,140 168,160" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/></svg>`},
+{en:'Giraffe',zh:'长颈鹿',cat:'animals',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="120" cy="145" rx="38" ry="30" fill="${B}"/><path d="M95,125Q85,80 80,50Q78,40 85,35Q92,32 94,42L105,120" fill="${B}"/><circle cx="80" cy="38" r="16" fill="${B}"/><circle cx="72" cy="34" r="5" fill="${W}"/><circle cx="73" cy="33" r="2.5" fill="${B}"/><path d="M76,26L72,12M84,24L86,10" fill="none" stroke="${B}" stroke-width="2.5" stroke-linecap="round"/><circle cx="72" cy="10" r="2.5" fill="${B}"/><circle cx="86" cy="8" r="2.5" fill="${B}"/><circle cx="92" cy="65" r="5" fill="${W}" opacity="0.2"/><circle cx="88" cy="85" r="4" fill="${W}" opacity="0.2"/><circle cx="95" cy="105" r="5" fill="${W}" opacity="0.2"/><rect x="95" y="165" width="14" height="28" rx="7" fill="${B}"/><rect x="120" y="165" width="14" height="28" rx="7" fill="${B}"/><rect x="108" y="168" width="12" height="24" rx="6" fill="${B}"/><rect x="135" y="168" width="12" height="24" rx="6" fill="${B}"/></svg>`},
+{en:'Apple',zh:'苹果',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,52Q82,40 68,44Q42,52 38,82Q34,108 42,132Q50,156 68,168Q82,178 100,178Q118,178 132,168Q150,156 158,132Q166,108 162,82Q158,52 132,44Q118,40 100,52Z" fill="${B}"/><path d="M100,52Q96,42 98,28" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M100,32Q114,20 128,24Q132,26 128,30Q118,36 108,36Z" fill="${B}"/><path d="M110,30Q120,24 126,26" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M86,52Q100,62 114,52" fill="none" stroke="${W}" stroke-width="1.8"/><path d="M56,72Q66,60 78,66" fill="none" stroke="${W}" stroke-width="3" stroke-linecap="round" opacity="0.3"/><circle cx="62" cy="82" r="5" fill="${W}" opacity="0.08"/><path d="M92,174Q100,180 108,174" fill="none" stroke="${W}" stroke-width="1.2"/></svg>`},
+{en:'Banana',zh:'香蕉',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M148,38Q155,32 162,35Q166,38 160,44Q152,50 148,38Z" fill="${B}"/><path d="M148,42Q142,36 135,34Q118,28 96,34Q72,42 55,60Q38,80 30,105Q24,128 28,148Q30,158 38,162Q46,166 52,158Q48,148 44,130Q42,110 50,88Q58,68 74,54Q90,42 110,38Q128,36 142,40Z" fill="${B}"/><path d="M40,148Q36,132 38,112Q42,88 54,68Q68,48 88,40Q104,34 122,36" fill="none" stroke="${W}" stroke-width="1.5" opacity="0.2"/><path d="M42,140Q40,125 42,108Q46,85 58,66Q72,48 92,42" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.12"/><path d="M28,148Q26,156 30,160" fill="none" stroke="${W}" stroke-width="0.6" opacity="0.15"/></svg>`},
+{en:'Watermelon',zh:'西瓜',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="100" rx="65" ry="55" fill="${B}"/><path d="M55,58Q70,100 55,145M80,50Q88,100 80,150M105,48Q108,100 105,152M130,52Q125,100 130,148" fill="none" stroke="${W}" stroke-width="2.5" opacity="0.25"/><path d="M45,168Q100,198 155,168" fill="${B}"/><path d="M45,168Q100,198 155,168" fill="none" stroke="${W}" stroke-width="1.5"/><ellipse cx="78" cy="178" rx="2.5" ry="3.5" fill="${W}"/><ellipse cx="100" cy="182" rx="2.5" ry="3.5" fill="${W}"/><ellipse cx="122" cy="178" rx="2.5" ry="3.5" fill="${W}"/></svg>`},
+{en:'Grapes',zh:'葡萄',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,38Q102,28 108,25" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M108,22Q125,18 130,30Q135,40 120,42Q110,35 108,22Z" fill="${B}"/><circle cx="82" cy="60" r="14" fill="${B}"/><circle cx="118" cy="60" r="14" fill="${B}"/><circle cx="68" cy="85" r="14" fill="${B}"/><circle cx="100" cy="78" r="14" fill="${B}"/><circle cx="132" cy="85" r="14" fill="${B}"/><circle cx="78" cy="110" r="14" fill="${B}"/><circle cx="110" cy="105" r="14" fill="${B}"/><circle cx="88" cy="133" r="14" fill="${B}"/><circle cx="122" cy="130" r="14" fill="${B}"/><circle cx="105" cy="155" r="14" fill="${B}"/></svg>`},
+{en:'Strawberry',zh:'草莓',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M60,72Q55,112 70,142Q85,168 100,172Q115,168 130,142Q145,112 140,72Z" fill="${B}"/><path d="M70,72L55,50 75,65ZM82,68L75,42 92,62ZM95,65L100,35 105,65ZM118,68L125,42 108,62ZM130,72L145,50 125,65Z" fill="${B}"/><ellipse cx="80" cy="92" rx="2.5" ry="3" fill="${W}"/><ellipse cx="100" cy="88" rx="2.5" ry="3" fill="${W}"/><ellipse cx="120" cy="92" rx="2.5" ry="3" fill="${W}"/><ellipse cx="75" cy="112" rx="2.5" ry="3" fill="${W}"/><ellipse cx="95" cy="108" rx="2.5" ry="3" fill="${W}"/><ellipse cx="115" cy="110" rx="2.5" ry="3" fill="${W}"/><ellipse cx="85" cy="132" rx="2.5" ry="3" fill="${W}"/><ellipse cx="105" cy="130" rx="2.5" ry="3" fill="${W}"/><ellipse cx="95" cy="152" rx="2.5" ry="3" fill="${W}"/></svg>`},
+{en:'Pear',zh:'梨',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M85,75Q78,50 85,38Q92,30 100,30Q108,30 115,38Q122,50 115,75Q135,95 138,120Q140,148 120,165Q108,175 100,175Q92,175 80,165Q60,148 62,120Q65,95 85,75Z" fill="${B}"/><path d="M100,30Q102,18 98,10" fill="none" stroke="${B}" stroke-width="3.5" stroke-linecap="round"/><path d="M73,98Q80,88 90,92" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round" opacity="0.3"/></svg>`},
+{en:'Cherry',zh:'樱桃',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,30Q85,50 70,90Q62,110 65,120" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M100,30Q115,55 130,90Q138,110 135,120" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M100,30Q112,22 120,25Q115,35 105,32Z" fill="${B}"/><circle cx="65" cy="140" r="28" fill="${B}"/><circle cx="135" cy="140" r="28" fill="${B}"/><path d="M50,128Q56,120 65,124" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round" opacity="0.3"/><path d="M120,128Q126,120 135,124" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round" opacity="0.3"/></svg>`},
+{en:'Orange',zh:'橙子',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="108" r="56" fill="${B}"/><path d="M100,55Q102,42 98,35" fill="none" stroke="${B}" stroke-width="3.5" stroke-linecap="round"/><path d="M100,72v72M72,108h56M78,82L122,134M122,82L78,134" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.15"/><circle cx="100" cy="108" r="5" fill="${W}" opacity="0.15"/><path d="M78,85Q86,78 95,82" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round" opacity="0.2"/></svg>`},
+{en:'Pineapple',zh:'菠萝',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="120" rx="38" ry="52" fill="${B}"/><path d="M68,80L62,82 68,88 62,92 68,98 62,102 68,108 62,112 68,118 62,122 68,128 62,132 68,138 62,142 68,148 62,152 68,158" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M88,72L82,76 88,82 82,88 88,94 82,100 88,106 82,112 88,118 82,124 88,130 82,136 88,142 82,148 88,154" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M108,72L114,76 108,82 114,88 108,94 114,100 108,106 114,112 108,118 114,124 108,130 114,136 108,142 114,148 108,154" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M128,80L134,84 128,90 134,96 128,102 134,108 128,114 134,120 128,126 134,132 128,138" fill="none" stroke="${W}" stroke-width="0.8" opacity="0.3"/><path d="M90,70Q85,45 80,35Q78,28 85,30Q92,32 90,70M100,68v-43Q105,18 108,25Q110,38 108,68M112,70Q118,45 122,35Q125,28 120,30Q115,32 112,70" fill="${B}"/></svg>`},
+{en:'Mushroom',zh:'蘑菇',cat:'food',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M80,120Q78,150 82,175Q85,180 100,180Q115,180 118,175Q122,150 120,120Z" fill="${W}" stroke="${B}" stroke-width="2"/><path d="M30,120Q30,50 100,40Q170,50 170,120Z" fill="${B}"/><circle cx="75" cy="75" r="10" fill="${W}"/><circle cx="120" cy="70" r="12" fill="${W}"/><circle cx="95" cy="100" r="8" fill="${W}"/><circle cx="140" cy="95" r="9" fill="${W}"/><circle cx="60" cy="100" r="7" fill="${W}"/><path d="M30,118Q100,130 170,118" fill="none" stroke="${W}" stroke-width="1.5"/></svg>`},
+{en:'Sun',zh:'太阳',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><line x1="100" y1="20" x2="100" y2="50" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="100" y1="150" x2="100" y2="180" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="20" y1="100" x2="50" y2="100" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="150" y1="100" x2="180" y2="100" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="40" y1="40" x2="62" y2="62" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="138" y1="138" x2="160" y2="160" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="160" y1="40" x2="138" y2="62" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="62" y1="138" x2="40" y2="160" stroke="${B}" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="100" r="40" fill="${B}"/><circle cx="85" cy="92" r="5" fill="${W}"/><circle cx="115" cy="92" r="5" fill="${W}"/><path d="M85,110Q100,122 115,110" fill="none" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/></svg>`},
+{en:'Moon',zh:'月亮',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="60" fill="${B}"/><circle cx="125" cy="85" r="48" fill="${W}"/><circle cx="75" cy="80" r="6" fill="${W}" opacity="0.12"/><circle cx="65" cy="110" r="8" fill="${W}" opacity="0.1"/><path d="M175,105L177,100 179,105 184,107 179,109 177,114 175,109 170,107Z" fill="${B}"/><circle cx="155" cy="50" r="2" fill="${B}"/><circle cx="160" cy="140" r="1.8" fill="${B}"/></svg>`},
+{en:'Star',zh:'星星',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,20 120,75 180,80 135,120 148,178 100,148 52,178 65,120 20,80 80,75" fill="${B}"/><circle cx="88" cy="92" r="4" fill="${W}"/><circle cx="112" cy="92" r="4" fill="${W}"/><path d="M90,106Q100,114 110,106" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round"/></svg>`},
+{en:'Cloud',zh:'云朵',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="70" cy="95" r="35" fill="${B}"/><circle cx="110" cy="85" r="40" fill="${B}"/><circle cx="145" cy="100" r="30" fill="${B}"/><rect x="55" y="95" width="110" height="35" fill="${B}"/><path d="M70,148L68,160Q68,164 70,164Q72,164 72,160ZM95,152L93,164Q93,168 95,168Q97,168 97,164ZM120,148L118,160Q118,164 120,164Q122,164 122,160Z" fill="${B}"/></svg>`},
+{en:'Tree',zh:'树',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="90" y="120" width="20" height="65" rx="3" fill="${B}"/><ellipse cx="100" cy="85" rx="52" ry="45" fill="${B}"/><ellipse cx="70" cy="95" rx="30" ry="28" fill="${B}"/><ellipse cx="130" cy="95" rx="30" ry="28" fill="${B}"/><ellipse cx="100" cy="60" rx="30" ry="28" fill="${B}"/><path d="M90,185Q80,182 70,185M110,185Q120,182 130,185" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/></svg>`},
+{en:'Flower',zh:'花',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,110Q98,140 100,190" fill="none" stroke="${B}" stroke-width="4"/><path d="M99,140Q70,125 65,135Q68,148 99,143" fill="${B}"/><path d="M101,155Q130,142 135,150Q130,162 101,158" fill="${B}"/><ellipse cx="100" cy="52" rx="18" ry="28" fill="${B}"/><ellipse cx="72" cy="72" rx="18" ry="28" fill="${B}" transform="rotate(-60,72,72)"/><ellipse cx="128" cy="72" rx="18" ry="28" fill="${B}" transform="rotate(60,128,72)"/><ellipse cx="78" cy="100" rx="18" ry="28" fill="${B}" transform="rotate(-120,78,100)"/><ellipse cx="122" cy="100" rx="18" ry="28" fill="${B}" transform="rotate(120,122,100)"/><circle cx="100" cy="82" r="14" fill="${W}" stroke="${B}" stroke-width="2"/><circle cx="95" cy="78" r="2" fill="${B}"/><circle cx="105" cy="78" r="2" fill="${B}"/><circle cx="100" cy="86" r="2" fill="${B}"/></svg>`},
+{en:'Rainbow',zh:'彩虹',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M20,160Q20,60 100,60Q180,60 180,160" fill="none" stroke="${B}" stroke-width="12"/><path d="M32,160Q32,75 100,75Q168,75 168,160" fill="none" stroke="${W}" stroke-width="6"/><path d="M40,160Q40,85 100,85Q160,85 160,160" fill="none" stroke="${B}" stroke-width="8"/><path d="M50,160Q50,95 100,95Q150,95 150,160" fill="none" stroke="${W}" stroke-width="5"/><path d="M57,160Q57,102 100,102Q143,102 143,160" fill="none" stroke="${B}" stroke-width="6"/><path d="M65,160Q65,110 100,110Q135,110 135,160" fill="none" stroke="${W}" stroke-width="4"/><path d="M70,160Q70,115 100,115Q130,115 130,160" fill="none" stroke="${B}" stroke-width="5"/></svg>`},
+{en:'Mountain',zh:'山',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,30 175,165 25,165" fill="${B}"/><polygon points="100,30 110,55 90,55" fill="${W}" opacity="0.2"/><polygon points="150,65 195,165 105,165" fill="${B}" opacity="0.7"/><line x1="25" y1="165" x2="195" y2="165" stroke="${B}" stroke-width="2"/></svg>`},
+{en:'Snowflake',zh:'雪花',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><line x1="100" y1="20" x2="100" y2="180" stroke="${B}" stroke-width="4"/><line x1="30" y1="60" x2="170" y2="140" stroke="${B}" stroke-width="4"/><line x1="30" y1="140" x2="170" y2="60" stroke="${B}" stroke-width="4"/><path d="M100,45L90,55M100,45L110,55M100,155L90,145M100,155L110,145" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><path d="M52,72L48,85M52,72L62,78M148,128L152,115M148,128L138,122M52,128L48,115M52,128L62,122M148,72L152,85M148,72L138,78" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="100" r="8" fill="${B}"/><circle cx="100" cy="100" r="4" fill="${W}"/></svg>`},
+{en:'Lightning',zh:'闪电',cat:'nature',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="110,15 70,95 95,95 65,185 145,80 115,80 150,15" fill="${B}"/></svg>`},
+{en:'House',zh:'房子',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="95" width="120" height="85" fill="${B}"/><polygon points="30,95 100,30 170,95" fill="${B}" stroke="${W}" stroke-width="2"/><rect x="130" y="40" width="18" height="35" fill="${B}" stroke="${W}" stroke-width="1.5"/><rect x="82" y="135" width="36" height="45" rx="18" fill="${W}"/><circle cx="110" cy="160" r="3" fill="${B}"/><rect x="52" y="110" width="24" height="22" rx="2" fill="${W}"/><rect x="124" y="110" width="24" height="22" rx="2" fill="${W}"/><line x1="64" y1="110" x2="64" y2="132" stroke="${B}" stroke-width="1.5"/><line x1="52" y1="121" x2="76" y2="121" stroke="${B}" stroke-width="1.5"/><line x1="136" y1="110" x2="136" y2="132" stroke="${B}" stroke-width="1.5"/><line x1="124" y1="121" x2="148" y2="121" stroke="${B}" stroke-width="1.5"/></svg>`},
+{en:'Car',zh:'汽车',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M25,120v-15Q25,95 35,95h40l15,-30Q92,60 100,60h40Q148,60 150,65l15,30h10Q185,95 185,105v15Z" fill="${B}"/><rect x="25" y="120" width="160" height="20" rx="5" fill="${B}"/><path d="M88,93L97,67Q98,64 102,64h36Q142,64 143,67l12,26Z" fill="${W}" opacity="0.9"/><line x1="120" y1="64" x2="118" y2="93" stroke="${B}" stroke-width="2"/><rect x="172" y="100" width="12" height="10" rx="3" fill="${W}"/><circle cx="60" cy="140" r="20" fill="${B}"/><circle cx="60" cy="140" r="12" fill="${W}"/><circle cx="60" cy="140" r="4" fill="${B}"/><circle cx="150" cy="140" r="20" fill="${B}"/><circle cx="150" cy="140" r="12" fill="${W}"/><circle cx="150" cy="140" r="4" fill="${B}"/></svg>`},
+{en:'Boat',zh:'船',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M25,130L40,160h120l15,-30Z" fill="${B}"/><rect x="70" y="100" width="60" height="30" rx="3" fill="${B}"/><circle cx="85" cy="115" r="6" fill="${W}"/><circle cx="105" cy="115" r="6" fill="${W}"/><circle cx="125" cy="115" r="6" fill="${W}"/><line x1="100" y1="100" x2="100" y2="30" stroke="${B}" stroke-width="3"/><polygon points="100,30 130,42 100,54" fill="${B}" stroke="${W}" stroke-width="1"/><path d="M10,165Q25,158 40,165Q55,172 70,165Q85,158 100,165Q115,172 130,165Q145,158 160,165Q175,172 190,165" fill="none" stroke="${B}" stroke-width="2.5"/></svg>`},
+{en:'Heart',zh:'爱心',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,170Q30,120 30,75Q30,40 60,35Q80,32 100,55Q120,32 140,35Q170,40 170,75Q170,120 100,170Z" fill="${B}"/><path d="M65,55Q72,42 85,48" fill="none" stroke="${W}" stroke-width="3" stroke-linecap="round" opacity="0.35"/></svg>`},
+{en:'Balloon',zh:'气球',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="80" rx="40" ry="52" fill="${B}"/><path d="M95,132L100,138 105,132" fill="${B}"/><path d="M100,138Q95,150 105,155Q95,160 100,175" fill="none" stroke="${B}" stroke-width="2"/><path d="M80,60Q88,48 98,55" fill="none" stroke="${W}" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/></svg>`},
+{en:'Umbrella',zh:'雨伞',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M25,105Q25,45 100,35Q175,45 175,105Z" fill="${B}"/><line x1="100" y1="35" x2="100" y2="165" stroke="${B}" stroke-width="3"/><path d="M100,165Q100,178 88,178Q78,178 78,168" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/></svg>`},
+{en:'Clock',zh:'钟表',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="70" fill="${B}"/><circle cx="100" cy="100" r="4" fill="${W}"/><line x1="100" y1="100" x2="100" y2="55" stroke="${W}" stroke-width="4" stroke-linecap="round"/><line x1="100" y1="100" x2="135" y2="100" stroke="${W}" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="38" r="3" fill="${W}"/><circle cx="100" cy="162" r="3" fill="${W}"/><circle cx="38" cy="100" r="3" fill="${W}"/><circle cx="162" cy="100" r="3" fill="${W}"/></svg>`},
+{en:'Key',zh:'钥匙',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="65" cy="80" r="30" fill="${B}"/><circle cx="65" cy="80" r="14" fill="${W}"/><rect x="90" y="72" width="75" height="16" rx="8" fill="${B}"/><rect x="150" y="88" width="8" height="18" rx="2" fill="${B}"/><rect x="138" y="88" width="8" height="14" rx="2" fill="${B}"/><rect x="160" y="88" width="8" height="22" rx="2" fill="${B}"/></svg>`},
+{en:'Bell',zh:'铃铛',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M60,130Q60,70 100,50Q140,70 140,130Z" fill="${B}"/><rect x="50" y="130" width="100" height="12" rx="6" fill="${B}"/><circle cx="100" cy="40" r="8" fill="${B}"/><circle cx="100" cy="152" r="10" fill="${B}"/></svg>`},
+{en:'Gift',zh:'礼物',cat:'objects',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="82" width="130" height="25" rx="4" fill="${B}"/><rect x="42" y="107" width="116" height="68" rx="3" fill="${B}"/><rect x="92" y="82" width="16" height="93" fill="${W}" opacity="0.2"/><path d="M100,82Q85,60 70,55Q60,52 62,62Q65,72 100,82" fill="${B}" stroke="${W}" stroke-width="1.5"/><path d="M100,82Q115,60 130,55Q140,52 138,62Q135,72 100,82" fill="${B}" stroke="${W}" stroke-width="1.5"/></svg>`},
+{en:'Hand',zh:'手',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M68,115L68,55Q68,48 75,48Q82,48 82,55v45M82,100V42Q82,35 89,35Q96,35 96,42v53M96,95V38Q96,31 103,31Q110,31 110,38v57M110,95V48Q110,41 117,41Q124,41 124,48v52" fill="${B}"/><path d="M65,105Q50,100 45,88Q42,78 50,72Q58,68 62,78Q64,85 65,95" fill="${B}"/><path d="M65,115Q60,140 68,160Q78,178 110,178Q135,178 138,155Q140,140 130,115h-6V100H68v15Z" fill="${B}"/></svg>`},
+{en:'Foot',zh:'脚',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M70,45Q65,60 65,90Q62,120 60,140Q55,160 58,170Q65,185 100,185Q140,185 148,170Q152,160 145,145Q138,120 135,90Q135,60 130,45Q120,30 100,28Q80,30 70,45Z" fill="${B}"/><ellipse cx="78" cy="176" rx="8" ry="6" fill="${B}" stroke="${W}" stroke-width="0.8"/><ellipse cx="95" cy="180" rx="8" ry="5" fill="${B}" stroke="${W}" stroke-width="0.8"/><ellipse cx="112" cy="179" rx="8" ry="5.5" fill="${B}" stroke="${W}" stroke-width="0.8"/><ellipse cx="127" cy="175" rx="7" ry="5" fill="${B}" stroke="${W}" stroke-width="0.8"/><ellipse cx="139" cy="168" rx="6" ry="5" fill="${B}" stroke="${W}" stroke-width="0.8"/></svg>`},
+{en:'Eye',zh:'眼睛',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M20,100Q60,50 100,50Q140,50 180,100Q140,150 100,150Q60,150 20,100Z" fill="${B}"/><circle cx="100" cy="100" r="32" fill="${W}"/><circle cx="100" cy="100" r="18" fill="${B}"/><circle cx="108" cy="92" r="6" fill="${W}"/></svg>`},
+{en:'Tooth',zh:'牙齿',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M65,50Q65,35 85,32Q95,30 100,35Q105,30 115,32Q135,35 135,50Q138,80 135,105Q132,130 120,155Q115,165 110,165Q105,155 100,145Q95,155 90,165Q85,165 80,155Q68,130 65,105Q62,80 65,50Z" fill="${B}"/><path d="M78,50Q86,44 100,46" fill="none" stroke="${W}" stroke-width="2" stroke-linecap="round" opacity="0.2"/></svg>`},
+{en:'Bone',zh:'骨头',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="48" cy="82" r="16" fill="${B}"/><circle cx="48" cy="118" r="16" fill="${B}"/><circle cx="152" cy="82" r="16" fill="${B}"/><circle cx="152" cy="118" r="16" fill="${B}"/><rect x="48" y="88" width="104" height="24" rx="4" fill="${B}"/></svg>`},
+{en:'Spoon',zh:'勺子',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="58" rx="30" ry="28" fill="${B}"/><rect x="95" y="82" width="10" height="100" rx="5" fill="${B}"/></svg>`},
+{en:'Cup',zh:'杯子',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M55,55h90l-10,110Q132,175 100,175Q68,175 65,165Z" fill="${B}"/><path d="M145,75Q168,75 170,95Q172,115 148,118" fill="none" stroke="${B}" stroke-width="6" stroke-linecap="round"/><path d="M60,52Q80,40 100,45Q120,40 140,52" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/></svg>`},
+{en:'Book',zh:'书',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="40" width="120" height="130" rx="5" fill="${B}"/><rect x="50" y="40" width="110" height="130" rx="3" fill="${B}" stroke="${W}" stroke-width="1.5"/><line x1="55" y1="40" x2="55" y2="170" stroke="${W}" stroke-width="2"/><line x1="65" y1="65" x2="140" y2="65" stroke="${W}" stroke-width="1.5" opacity="0.4"/><line x1="65" y1="80" x2="130" y2="80" stroke="${W}" stroke-width="1" opacity="0.3"/></svg>`},
+{en:'Pencil',zh:'铅笔',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="88" y="30" width="24" height="120" rx="2" fill="${B}"/><polygon points="88,150 100,185 112,150" fill="${B}"/><polygon points="95,150 100,172 105,150" fill="${W}" opacity="0.2"/><rect x="88" y="30" width="24" height="15" rx="2" fill="${B}" stroke="${W}" stroke-width="1"/></svg>`},
+{en:'Scissors',zh:'剪刀',cat:'body',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="155" r="18" fill="none" stroke="${B}" stroke-width="5"/><circle cx="140" cy="155" r="18" fill="none" stroke="${B}" stroke-width="5"/><path d="M68,140L130,50M132,140L70,50" fill="none" stroke="${B}" stroke-width="6" stroke-linecap="round"/><circle cx="100" cy="95" r="5" fill="${B}"/></svg>`},
+{en:'Circle',zh:'圆形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="70" fill="${B}"/></svg>`},
+{en:'Triangle',zh:'三角形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,25 180,175 20,175" fill="${B}"/></svg>`},
+{en:'Square',zh:'正方形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="30" width="140" height="140" rx="5" fill="${B}"/></svg>`},
+{en:'Diamond',zh:'菱形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,20 180,100 100,180 20,100" fill="${B}"/></svg>`},
+{en:'Pentagon',zh:'五边形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,25 180,82 150,170 50,170 20,82" fill="${B}"/></svg>`},
+{en:'Hexagon',zh:'六边形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,25 170,62 170,138 100,175 30,138 30,62" fill="${B}"/></svg>`},
+{en:'Cross',zh:'十字形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="75" y="25" width="50" height="150" rx="5" fill="${B}"/><rect x="25" y="75" width="150" height="50" rx="5" fill="${B}"/></svg>`},
+{en:'Crescent',zh:'月牙形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="65" fill="${B}"/><circle cx="130" cy="85" r="55" fill="${W}"/></svg>`},
+{en:'Spiral',zh:'螺旋形',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,100Q100,80 115,78Q135,78 135,100Q135,125 105,125Q70,125 70,95Q70,58 108,55Q150,55 155,102Q155,150 98,155Q45,155 40,95Q40,38 105,30Q175,30 180,102" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/></svg>`},
+{en:'Arrow',zh:'箭头',cat:'shapes',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,20 170,90 130,90 130,180 70,180 70,90 30,90" fill="${B}"/></svg>`},
+{en:'Airplane',zh:'飞机',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="95" rx="12" ry="55" fill="${B}"/><path d="M88,85Q50,75 25,80Q20,82 22,86Q28,92 88,95" fill="${B}"/><path d="M112,85Q150,75 175,80Q180,82 178,86Q172,92 112,95" fill="${B}"/><path d="M92,138Q80,142 75,148Q72,152 78,152Q85,150 92,142" fill="${B}"/><path d="M108,138Q120,142 125,148Q128,152 122,152Q115,150 108,142" fill="${B}"/></svg>`},
+{en:'Rocket',zh:'火箭',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,20Q80,60 78,110Q78,130 100,140Q122,130 122,110Q120,60 100,20Z" fill="${B}"/><circle cx="100" cy="80" r="10" fill="${W}"/><circle cx="100" cy="80" r="5" fill="${B}"/><path d="M78,110Q60,115 55,135Q62,130 78,125" fill="${B}"/><path d="M122,110Q140,115 145,135Q138,130 122,125" fill="${B}"/><path d="M88,140Q85,158 80,170Q90,165 100,168Q110,165 120,170Q115,158 112,140" fill="${B}" stroke="${W}" stroke-width="1"/></svg>`},
+{en:'Bicycle',zh:'自行车',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="55" cy="130" r="30" fill="none" stroke="${B}" stroke-width="5"/><circle cx="145" cy="130" r="30" fill="none" stroke="${B}" stroke-width="5"/><line x1="55" y1="130" x2="95" y2="130" stroke="${B}" stroke-width="4"/><line x1="95" y1="130" x2="110" y2="85" stroke="${B}" stroke-width="4"/><line x1="95" y1="130" x2="145" y2="130" stroke="${B}" stroke-width="3"/><line x1="110" y1="85" x2="145" y2="130" stroke="${B}" stroke-width="3"/><line x1="105" y1="85" x2="125" y2="85" stroke="${B}" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="65" r="5" fill="${B}"/></svg>`},
+{en:'Train',zh:'火车',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="55" width="130" height="90" rx="15" fill="${B}"/><rect x="45" y="65" width="40" height="30" rx="5" fill="${W}"/><rect x="95" y="65" width="40" height="30" rx="5" fill="${W}"/><circle cx="65" cy="145" r="15" fill="${B}" stroke="${W}" stroke-width="2"/><circle cx="135" cy="145" r="15" fill="${B}" stroke="${W}" stroke-width="2"/><rect x="85" y="40" width="30" height="18" rx="5" fill="${B}"/><line x1="20" y1="160" x2="180" y2="160" stroke="${B}" stroke-width="3"/></svg>`},
+{en:'Helicopter',zh:'直升机',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="85" cy="110" rx="50" ry="30" fill="${B}"/><circle cx="70" cy="105" r="12" fill="${W}"/><path d="M135,105Q155,95 170,100Q175,102 170,108Q155,115 135,112" fill="${B}"/><line x1="85" y1="80" x2="85" y2="65" stroke="${B}" stroke-width="3"/><line x1="30" y1="65" x2="140" y2="65" stroke="${B}" stroke-width="4" stroke-linecap="round"/><path d="M70,140L55,155h20ZM100,140L85,155h30Z" fill="${B}"/></svg>`},
+{en:'Bus',zh:'公交车',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="60" width="150" height="85" rx="12" fill="${B}"/><rect x="35" y="72" width="30" height="28" rx="4" fill="${W}"/><rect x="72" y="72" width="30" height="28" rx="4" fill="${W}"/><rect x="110" y="72" width="30" height="28" rx="4" fill="${W}"/><circle cx="60" cy="148" r="15" fill="${B}" stroke="${W}" stroke-width="2"/><circle cx="140" cy="148" r="15" fill="${B}" stroke="${W}" stroke-width="2"/><line x1="15" y1="163" x2="185" y2="163" stroke="${B}" stroke-width="2"/></svg>`},
+{en:'Planet',zh:'星球',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="100" rx="90" ry="22" fill="none" stroke="${B}" stroke-width="3" transform="rotate(-20,100,100)"/><circle cx="100" cy="100" r="45" fill="${B}"/><circle cx="85" cy="85" r="8" fill="${W}" opacity="0.1"/><circle cx="115" cy="108" r="12" fill="${W}" opacity="0.08"/></svg>`},
+{en:'UFO',zh:'飞碟',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="105" rx="70" ry="18" fill="${B}"/><path d="M55,105Q55,65 100,55Q145,65 145,105" fill="${B}"/><circle cx="60" cy="105" r="6" fill="${W}" opacity="0.4"/><circle cx="85" cy="108" r="6" fill="${W}" opacity="0.4"/><circle cx="115" cy="108" r="6" fill="${W}" opacity="0.4"/><circle cx="140" cy="105" r="6" fill="${W}" opacity="0.4"/><path d="M75,123L65,155M100,123v32M125,123L135,155" fill="none" stroke="${B}" stroke-width="2" stroke-dasharray="4,4"/></svg>`},
+{en:'Anchor',zh:'锚',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="42" r="16" fill="none" stroke="${B}" stroke-width="5"/><line x1="100" y1="58" x2="100" y2="170" stroke="${B}" stroke-width="5"/><line x1="60" y1="85" x2="140" y2="85" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M100,170Q50,165 40,125M100,170Q150,165 160,125" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/></svg>`},
+{en:'Compass',zh:'指南针',cat:'transport',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="68" fill="none" stroke="${B}" stroke-width="4"/><polygon points="100,40 108,95 100,100 92,95" fill="${B}"/><polygon points="100,160 108,105 100,100 92,105" fill="${B}" opacity="0.3"/><circle cx="100" cy="100" r="5" fill="${B}"/></svg>`},
+{en:'Drum',zh:'鼓',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="140" rx="60" ry="20" fill="${B}"/><rect x="40" y="70" width="120" height="70" fill="${B}"/><ellipse cx="100" cy="70" rx="60" ry="20" fill="${B}" stroke="${W}" stroke-width="2"/><line x1="50" y1="50" x2="80" y2="72" stroke="${B}" stroke-width="3" stroke-linecap="round"/><line x1="150" y1="50" x2="120" y2="72" stroke="${B}" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="48" r="5" fill="${B}"/><circle cx="150" cy="48" r="5" fill="${B}"/></svg>`},
+{en:'Guitar',zh:'吉他',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="95" y="20" width="10" height="80" rx="2" fill="${B}"/><rect x="90" y="18" width="20" height="12" rx="3" fill="${B}" stroke="${W}" stroke-width="1"/><path d="M85,100Q65,110 60,135Q58,155 75,168Q88,178 100,178Q112,178 125,168Q142,155 140,135Q135,110 115,100Z" fill="${B}"/><circle cx="100" cy="140" r="12" fill="${W}"/><circle cx="100" cy="140" r="4" fill="${B}"/></svg>`},
+{en:'Piano',zh:'钢琴',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="60" width="150" height="90" rx="5" fill="${B}"/><rect x="30" y="65" width="18" height="80" fill="${W}"/><rect x="50" y="65" width="18" height="80" fill="${W}"/><rect x="70" y="65" width="18" height="80" fill="${W}"/><rect x="90" y="65" width="18" height="80" fill="${W}"/><rect x="110" y="65" width="18" height="80" fill="${W}"/><rect x="130" y="65" width="18" height="80" fill="${W}"/><rect x="150" y="65" width="18" height="80" fill="${W}"/><rect x="42" y="65" width="12" height="50" rx="1" fill="${B}"/><rect x="62" y="65" width="12" height="50" rx="1" fill="${B}"/><rect x="102" y="65" width="12" height="50" rx="1" fill="${B}"/><rect x="122" y="65" width="12" height="50" rx="1" fill="${B}"/><rect x="142" y="65" width="12" height="50" rx="1" fill="${B}"/></svg>`},
+{en:'Crown',zh:'皇冠',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="30,140 30,75 60,105 100,55 140,105 170,75 170,140" fill="${B}"/><rect x="30" y="140" width="140" height="20" rx="3" fill="${B}" stroke="${W}" stroke-width="1.5"/><circle cx="30" cy="75" r="5" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="100" cy="55" r="5" fill="${B}" stroke="${W}" stroke-width="1"/><circle cx="170" cy="75" r="5" fill="${B}" stroke="${W}" stroke-width="1"/></svg>`},
+{en:'Camera',zh:'相机',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="70" width="140" height="90" rx="10" fill="${B}"/><rect x="75" y="55" width="50" height="18" rx="5" fill="${B}"/><circle cx="100" cy="115" r="28" fill="${B}" stroke="${W}" stroke-width="3"/><circle cx="100" cy="115" r="18" fill="${W}" opacity="0.15"/><circle cx="100" cy="115" r="8" fill="${B}"/><circle cx="148" cy="82" r="6" fill="${W}" opacity="0.3"/></svg>`},
+{en:'Television',zh:'电视',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="50" width="150" height="100" rx="8" fill="${B}"/><rect x="32" y="57" width="136" height="86" rx="4" fill="${W}" opacity="0.12"/><rect x="80" y="155" width="40" height="8" rx="2" fill="${B}"/><rect x="60" y="163" width="80" height="8" rx="3" fill="${B}"/></svg>`},
+{en:'Leaf',zh:'树叶',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,30Q45,50 35,110Q30,155 80,175Q100,180 120,175Q170,155 165,110Q155,50 100,30Z" fill="${B}"/><path d="M100,30v150" fill="none" stroke="${W}" stroke-width="2"/><path d="M100,60L70,75M100,85L62,105M100,110L68,130M100,135L75,150M100,70L130,82M100,95L135,110M100,120L132,135" fill="none" stroke="${W}" stroke-width="1" opacity="0.3"/></svg>`},
+{en:'Feather',zh:'羽毛',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M90,185Q88,170 95,140Q100,110 110,80Q120,50 135,30Q140,25 138,30Q130,55 122,85Q115,115 108,145Q104,168 105,185Z" fill="${B}"/><path d="M95,150Q80,130 70,105Q62,82 65,60Q68,48 72,55Q75,70 80,90Q86,112 95,135" fill="${B}"/><path d="M110,115Q125,100 138,78Q148,58 148,42Q148,36 144,42Q140,55 132,75Q122,98 108,118" fill="${B}"/><path d="M98,180Q100,140 108,100Q116,62 130,35" fill="none" stroke="${W}" stroke-width="1.2"/></svg>`},
+{en:'Shell',zh:'贝壳',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,40Q40,60 30,120Q28,155 60,170Q80,178 100,178Q120,178 140,170Q172,155 170,120Q160,60 100,40Z" fill="${B}"/><path d="M100,40L60,170M100,40L80,175M100,40v138M100,40L120,175M100,40L140,170" fill="none" stroke="${W}" stroke-width="1.2"/><path d="M45,100Q70,90 100,88Q130,90 155,100M40,130Q70,118 100,115Q130,118 160,130" fill="none" stroke="${W}" stroke-width="1" opacity="0.4"/></svg>`},
+{en:'Egg',zh:'鸡蛋',cat:'music',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,30Q60,50 55,100Q52,140 72,162Q85,178 100,178Q115,178 128,162Q148,140 145,100Q140,50 100,30Z" fill="${B}"/><path d="M78,62Q88,52 100,58" fill="none" stroke="${W}" stroke-width="2.5" stroke-linecap="round" opacity="0.2"/></svg>`},
+{en:'Raindrop',zh:'雨滴',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,25Q65,90 55,125Q48,155 70,172Q85,182 100,182Q115,182 130,172Q152,155 145,125Q135,90 100,25Z" fill="${B}"/><path d="M75,112Q82,98 95,105" fill="none" stroke="${W}" stroke-width="2.5" stroke-linecap="round" opacity="0.25"/></svg>`},
+{en:'Fire',zh:'火',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,20Q80,50 70,80Q55,115 60,145Q65,170 100,180Q135,170 140,145Q145,115 130,80Q120,50 100,20Z" fill="${B}"/><path d="M100,45Q90,68 85,90Q78,118 82,140Q88,160 100,168Q112,160 118,140Q122,118 115,90Q110,68 100,45Z" fill="${W}" opacity="0.1"/></svg>`},
+{en:'Tornado',zh:'龙卷风',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M30,40Q100,30 170,40" fill="none" stroke="${B}" stroke-width="8" stroke-linecap="round"/><path d="M40,60Q100,52 160,60" fill="none" stroke="${B}" stroke-width="7" stroke-linecap="round"/><path d="M50,80Q100,74 148,80" fill="none" stroke="${B}" stroke-width="6" stroke-linecap="round"/><path d="M60,100Q100,95 135,100" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M72,118Q100,114 125,118" fill="none" stroke="${B}" stroke-width="5" stroke-linecap="round"/><path d="M80,136Q100,132 118,136" fill="none" stroke="${B}" stroke-width="4" stroke-linecap="round"/><path d="M88,152Q100,149 112,152" fill="none" stroke="${B}" stroke-width="4" stroke-linecap="round"/><path d="M93,168Q100,166 107,168" fill="none" stroke="${B}" stroke-width="3" stroke-linecap="round"/></svg>`},
+{en:'Spider Web',zh:'蜘蛛网',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><line x1="100" y1="20" x2="100" y2="180" stroke="${B}" stroke-width="1.5"/><line x1="20" y1="100" x2="180" y2="100" stroke="${B}" stroke-width="1.5"/><line x1="35" y1="35" x2="165" y2="165" stroke="${B}" stroke-width="1.5"/><line x1="165" y1="35" x2="35" y2="165" stroke="${B}" stroke-width="1.5"/><circle cx="100" cy="100" r="20" fill="none" stroke="${B}" stroke-width="1.2"/><circle cx="100" cy="100" r="40" fill="none" stroke="${B}" stroke-width="1.2"/><circle cx="100" cy="100" r="60" fill="none" stroke="${B}" stroke-width="1.2"/><circle cx="100" cy="100" r="4" fill="${B}"/></svg>`},
+{en:'Footprint',zh:'脚印',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="120" rx="32" ry="45" fill="${B}"/><ellipse cx="72" cy="62" rx="12" ry="15" fill="${B}" transform="rotate(-10,72,62)"/><ellipse cx="92" cy="55" rx="10" ry="14" fill="${B}"/><ellipse cx="112" cy="55" rx="10" ry="14" fill="${B}"/><ellipse cx="130" cy="62" rx="12" ry="15" fill="${B}" transform="rotate(10,130,62)"/><ellipse cx="140" cy="78" rx="10" ry="12" fill="${B}" transform="rotate(20,140,78)"/></svg>`},
+{en:'Infinity',zh:'无穷大',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100,100Q70,60 45,65Q20,70 20,100Q20,130 45,135Q70,140 100,100Q130,60 155,65Q180,70 180,100Q180,130 155,135Q130,140 100,100Z" fill="none" stroke="${B}" stroke-width="8" stroke-linecap="round"/></svg>`},
+{en:'Hat',zh:'帽子',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="145" rx="80" ry="18" fill="${B}"/><path d="M62,145Q62,75 100,55Q138,75 138,145" fill="${B}"/><rect x="62" y="132" width="76" height="14" rx="2" fill="${B}" stroke="${W}" stroke-width="1.5"/></svg>`},
+{en:'Candle',zh:'蜡烛',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="78" y="82" width="44" height="100" rx="4" fill="${B}"/><line x1="100" y1="82" x2="100" y2="62" stroke="${B}" stroke-width="2.5"/><path d="M92,62Q92,42 100,32Q108,42 108,62Q108,70 100,70Q92,70 92,62Z" fill="${B}"/><circle cx="100" cy="48" r="5" fill="${W}" opacity="0.25"/><path d="M86,92Q94,86 104,90" fill="none" stroke="${W}" stroke-width="1.5" stroke-linecap="round" opacity="0.2"/></svg>`},
+{en:'Lamp',zh:'台灯',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M58,112L82,48h36l24,64Z" fill="${B}"/><rect x="94" y="112" width="12" height="42" rx="3" fill="${B}"/><ellipse cx="100" cy="164" rx="32" ry="8" fill="${B}"/><path d="M66,105Q78,96 96,92" fill="none" stroke="${W}" stroke-width="1.5" stroke-linecap="round" opacity="0.2"/></svg>`},
+{en:'Ring',zh:'戒指',cat:'weather',svg:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="118" rx="40" ry="48" fill="none" stroke="${B}" stroke-width="12"/><path d="M78,78L100,42 122,78" fill="${B}"/><circle cx="100" cy="48" r="8" fill="${B}" stroke="${W}" stroke-width="1.2"/><circle cx="100" cy="48" r="3" fill="${W}" opacity="0.3"/></svg>`},
+];
+
+
+// ══ SPEECH (降级: 检测TTS可用性) ══
+var ttsOK = 'speechSynthesis' in window;
+function speak(t,l){if(!ttsOK)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l;u.rate=0.85;speechSynthesis.speak(u)}catch(e){}}
+function speakBoth(e,z){if(!ttsOK)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(e);u.lang='en-US';u.rate=0.8;u.onend=function(){setTimeout(function(){var v=new SpeechSynthesisUtterance(z);v.lang='zh-CN';v.rate=0.85;speechSynthesis.speak(v)},400)};speechSynthesis.speak(u)}catch(e){}}
+
+// ══ CATEGORIES ══
+var activeCat='all';
+var catBar=document.getElementById('catBar');
+var catKeys=Object.keys(CAT_LABELS);
+for(var ci=0;ci<catKeys.length;ci++){
+  (function(k){
+    var btn=document.createElement('button');
+    btn.className='cat-tag'+(k==='all'?' active':'');
+    btn.textContent=CAT_LABELS[k];
+    btn.onclick=function(){
+      activeCat=k;
+      var tags=document.querySelectorAll('.cat-tag');
+      for(var t=0;t<tags.length;t++){tags[t].className='cat-tag'}
+      btn.className='cat-tag active';
+      renderGrid();
+    };
+    catBar.appendChild(btn);
+  })(catKeys[ci]);
+}
+
+// ══ LAZY LOAD (IntersectionObserver 降级) ══
+var hasIO = 'IntersectionObserver' in window;
+var observer = null;
+if(hasIO){
+  observer = new IntersectionObserver(function(entries){
+    for(var i=0;i<entries.length;i++){
+      if(entries[i].isIntersecting){
+        var el=entries[i].target;
+        var svg=el.getAttribute('data-svg');
+        if(svg){
+          el.innerHTML=svg;
+          el.removeAttribute('data-svg');
+          el.className='card-img-inner loaded';
+        }
+        observer.unobserve(el);
+      }
+    }
+  },{rootMargin:'200px 0px'});
+}
+
+// ══ GRID (分批渲染 + 懒加载) ══
+var grid=document.getElementById('grid');
+function renderGrid(){
+  grid.innerHTML='';
+  var filtered=[];
+  for(var i=0;i<cards.length;i++){
+    if(activeCat==='all'||cards[i].cat===activeCat) filtered.push(cards[i]);
+  }
+  // 分批渲染: 先渲染前12张，其余requestIdleCallback/setTimeout分批
+  var BATCH1=12;
+  renderBatch(filtered,0,Math.min(BATCH1,filtered.length));
+  if(filtered.length>BATCH1){
+    var pos=BATCH1;
+    var BATCH=8;
+    function nextBatch(){
+      if(pos>=filtered.length)return;
+      var end=Math.min(pos+BATCH,filtered.length);
+      renderBatch(filtered,pos,end);
+      pos=end;
+      if(pos<filtered.length){
+        if(window.requestIdleCallback) requestIdleCallback(nextBatch);
+        else setTimeout(nextBatch,16);
+      }
+    }
+    if(window.requestIdleCallback) requestIdleCallback(nextBatch);
+    else setTimeout(nextBatch,50);
+  }
+}
+
+function renderBatch(arr,start,end){
+  var frag=document.createDocumentFragment();
+  for(var i=start;i<end;i++){
+    var c=arr[i];
+    var wrap=document.createElement('div');
+    wrap.className='card-wrap';
+
+    var d=document.createElement('article');
+    d.className='card';
+
+    // 卡片图片区域
+    var imgDiv=document.createElement('div');
+    imgDiv.className='card-img';
+
+    var inner=document.createElement('div');
+    // 前12张直接渲染，其余懒加载
+    if(i<12||!hasIO){
+      inner.className='card-img-inner loaded';
+      inner.innerHTML=c.svg;
+    } else {
+      inner.className='card-img-inner lazy';
+      inner.setAttribute('data-svg',c.svg);
+    }
+    imgDiv.appendChild(inner);
+
+    // 卡片信息区域 (用字符串拼接减少DOM操作)
+    var info=document.createElement('div');
+    info.className='card-info';
+    info.innerHTML='<div class="card-en">'+c.en+'</div><div class="card-zh">'+c.zh+'</div><div class="card-btns"><button class="card-btn" data-en="'+c.en+'" data-action="en">🔊EN</button><button class="card-btn" data-zh="'+c.zh+'" data-action="zh">🔊中</button></div>';
+
+    d.appendChild(imgDiv);
+    d.appendChild(info);
+    wrap.appendChild(d);
+    frag.appendChild(wrap);
+
+    // 懒加载观察
+    if(i>=12&&hasIO&&observer){
+      observer.observe(inner);
+    }
+  }
+  grid.appendChild(frag);
+}
+
+// 事件委托 (替代每个按钮单独绑定，减少内存)
+grid.addEventListener('click',function(e){
+  var btn=e.target;
+  if(btn.classList&&btn.classList.contains('card-btn')){
+    e.stopPropagation();
+    var action=btn.getAttribute('data-action');
+    if(action==='en') speak(btn.getAttribute('data-en'),'en-US');
+    if(action==='zh') speak(btn.getAttribute('data-zh'),'zh-CN');
+    return;
+  }
+  // 点击卡片本身 → 朗读双语
+  var card=btn;
+  while(card&&!card.classList.contains('card')){card=card.parentElement}
+  if(card){
+    var en=card.querySelector('.card-en');
+    var zh=card.querySelector('.card-zh');
+    if(en&&zh) speakBoth(en.textContent,zh.textContent);
+  }
+});
+
+renderGrid();
+
+// ══ SLIDESHOW ══
+var slideOrder=[],slideIdx=0,slideTimer=null,paused=false,DUR=6000;
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t}return b}
+function getSlideCards(){
+  if(activeCat==='all')return cards;
+  var r=[];for(var i=0;i<cards.length;i++){if(cards[i].cat===activeCat)r.push(cards[i])}return r;
+}
+function openSlideshow(seq){
+  var pool=getSlideCards();
+  var indices=[];for(var i=0;i<pool.length;i++)indices.push(i);
+  slideOrder=seq?indices:shuffle(indices);
+  slideIdx=0;paused=false;
+  document.getElementById('pauseBtn').textContent='⏸';
+  document.getElementById('slideOverlay').className='slide-overlay active';
+  document.body.style.overflow='hidden';
+  showSlide(pool);
+}
+function closeSlide(){
+  document.getElementById('slideOverlay').className='slide-overlay';
+  document.body.style.overflow='';
+  clearTimeout(slideTimer);
+  if(ttsOK)try{speechSynthesis.cancel()}catch(e){}
+}
+function showSlide(pool){
+  pool=pool||getSlideCards();
+  clearTimeout(slideTimer);
+  var c=pool[slideOrder[slideIdx]];
+  document.getElementById('slideImg').innerHTML=c.svg;
+  document.getElementById('slideEn').textContent=c.en;
+  document.getElementById('slideZh').textContent=c.zh;
+  document.getElementById('slideCounter').textContent=(slideIdx+1)+' / '+slideOrder.length;
+  var bar=document.getElementById('progressBar');
+  bar.style.transition='none';bar.style.width='0%';
+  speakBoth(c.en,c.zh);
+  if(!paused){
+    setTimeout(function(){bar.style.transition='width '+DUR+'ms linear';bar.style.width='100%'},20);
+    slideTimer=setTimeout(function(){slideIdx=(slideIdx+1)%slideOrder.length;showSlide(pool)},DUR);
+  }
+}
+function slideNext(){var p=getSlideCards();slideIdx=(slideIdx+1)%slideOrder.length;showSlide(p)}
+function slidePrev(){var p=getSlideCards();slideIdx=(slideIdx-1+slideOrder.length)%slideOrder.length;showSlide(p)}
+function togglePause(){paused=!paused;document.getElementById('pauseBtn').textContent=paused?'▶':'⏸';if(!paused)showSlide();else{clearTimeout(slideTimer);var b=document.getElementById('progressBar');b.style.transition='none'}}
+function speakCur(l){var pool=getSlideCards();var c=pool[slideOrder[slideIdx]];l==='en'?speak(c.en,'en-US'):speak(c.zh,'zh-CN')}
+
+// ══ KEYBOARD ══
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('slideOverlay').className.indexOf('active')===-1)return;
+  if(e.key==='ArrowRight'||e.keyCode===39)slideNext();
+  if(e.key==='ArrowLeft'||e.keyCode===37)slidePrev();
+  if(e.key===' '||e.keyCode===32){e.preventDefault();togglePause()}
+  if(e.key==='Escape'||e.keyCode===27)closeSlide();
+});
+
+// ══ TOUCH ══
+var tx=0;var so=document.getElementById('slideOverlay');
+so.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+so.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(d>50)slidePrev();else if(d<-50)slideNext()},{passive:true});
+</script>
+</body>
+</html>
